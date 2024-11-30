@@ -4,19 +4,11 @@ on:
   push:
     branches: [ "master" ]
 
-permissions:
-  contents: write
-  checks: write
-  id-token: write
-  pull-requests: write
-  statuses: write
-
 jobs:
   build:
+    permissions: write-all
 
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
     - uses: actions/checkout@v4
