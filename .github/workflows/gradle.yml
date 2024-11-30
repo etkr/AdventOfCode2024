@@ -6,7 +6,8 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions: write-all
+env:
+  GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
 
 jobs:
   build:
