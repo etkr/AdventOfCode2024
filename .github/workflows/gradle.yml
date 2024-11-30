@@ -8,11 +8,8 @@ on:
 
 permissions:
   contents: write
-  checks: write
-  id-token: write
-  statuses: write
   pull-requests: write
-  actions: write
+  repository-projects: write
 
 jobs:
   build:
