@@ -14,7 +14,7 @@ class Day0Test {
     }
 
     @ParameterizedTest(name = "{0} should have {1} increasing windows")
-    @CsvSource("test.txt,5", "input.txt,1457")
+    @CsvSource("test.txt,4", "input.txt,1457")
     fun `Count number of increasing windows`(file: String, expected: Int) {
         val input = this::class.java.getResourceAsStream(file).bufferedReader().readLines().map(String::toInt)
         assertEquals(expected, numberIncreasingWindows(input, 3))
