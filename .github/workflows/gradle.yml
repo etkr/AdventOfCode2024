@@ -6,12 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  id-token: write
-  contents: write
-  actions: write
-  checks: write
-
 jobs:
   build:
 
