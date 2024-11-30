@@ -6,11 +6,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
-
 jobs:
   build:
 
