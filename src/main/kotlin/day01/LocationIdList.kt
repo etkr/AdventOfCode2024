@@ -16,7 +16,10 @@ class LocationIdList(input: List<Pair<Int, Int>>) {
      * repeat the process for the second-smallest items and so on and sum the differences
      * @return the total distance
      */
-    fun totalDistance() = left.sorted().zip(right.sorted()).sumOf {  abs(it.first - it.second) }
+    fun totalDistance() =
+        left.sorted()
+            .zip(right.sorted())
+            .sumOf { abs(it.first - it.second) }
 
     /**
      * Calculate the similarity score by multiplying the location in the left list
