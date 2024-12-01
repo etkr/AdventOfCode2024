@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
 }
 
 group = "org.example"
@@ -13,7 +13,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation(kotlin("test"))
     testRuntimeOnly("org.junit.platform:junit-platform-reporting")
-
 }
 
 tasks.test {
