@@ -20,6 +20,9 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
+    compilerOptions {
+        freeCompilerArgs.add("-Xwhen-guards")
+    }
 }
 
 tasks.withType<Test>().configureEach {
