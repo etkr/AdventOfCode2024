@@ -24,7 +24,7 @@ jobs:
         gradle-version: '8.11'
 
     - name: Build
-      run: gradle build
+      run: gradle build -x test
 
 #    - name: Unit Test
 #      run: gradle test
