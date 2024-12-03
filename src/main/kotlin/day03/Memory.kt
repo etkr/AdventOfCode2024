@@ -22,20 +22,20 @@ class Memory(private val memory: String) {
     }
 
     /**
-     * Part 1
-     */
-    fun sumOfCleanMemory() = regex.findAll(memory).map(::parseOperation).filterIsInstance<Mul>().sumOf { it.a * it.b }
-
-    /**
      * Produce a sequence of operations from the input
      */
     fun produceOperations() = regex.findAll(memory).map(::parseOperation)
 
     /**
+     * Part 1
+     */
+    fun sumOfCleanMemory() = produceOperations().filterIsInstance<Mul>().sumOf { it.a * it.b }
+
+    /**
      * Pattern matching !!! and tail recursion in kotlin !!!
      *
      * Reducer function using tail recursion
-     * - when operation is do, set enabled, when don't set to false
+     * - when operation is do, set enabled to true, when don't set enabled to false
      * - add multiplication operation result if enabled is set.
      */
     private tailrec fun sumOperations(list: Sequence<Operation>, accumulator: Int = 0, enabled: Boolean = true): Int =
@@ -48,7 +48,7 @@ class Memory(private val memory: String) {
         }
 
     /**
-     * Part 1
+     * Part 2
      */
     fun sumOfCleanMemoryWithDoInstructions() = sumOperations(produceOperations())
 }
