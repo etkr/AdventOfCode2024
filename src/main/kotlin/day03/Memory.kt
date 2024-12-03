@@ -1,11 +1,15 @@
 package day03
 
-class Memory(private val memory: String) {
+interface Operation
 
-    interface Operation
-    object Do : Operation;
-    object Dont : Operation;
-    data class Mul(val a: Int, val b: Int) : Operation
+object Do : Operation;
+object Dont : Operation;
+
+data class Mul(val a: Int, val b: Int) : Operation {
+    fun product() = a * b
+}
+
+class Memory(private val memory: String) {
 
     private val regex = Regex("""(do|don't|mul)\((\d*)?,?(\d*)?\)""")
 
@@ -21,14 +25,18 @@ class Memory(private val memory: String) {
     fun produceOperations() = regex.findAll(memory).map(::parseOperation)
 
     /* Part 1 */
-    fun sumOfCleanMemory() = produceOperations().filterIsInstance<Mul>().sumOf { it.a * it.b }
+    fun sumOfCleanMemory() = produceOperations().filterIsInstance<Mul>().sumOf(Mul::product)
 
-    data class Accumulator(val value: Int = 0, val enabled: Boolean = true)
+    private data class Accumulator(val value: Int = 0, val enabled: Boolean = true)
 
     private fun reducer(accumulator: Accumulator, operation: Operation) = when (operation) {
         Do -> Accumulator(accumulator.value, true)
         Dont -> Accumulator(accumulator.value, false)
-        is Mul if (accumulator.enabled) -> Accumulator(accumulator.value + operation.a * operation.b, accumulator.enabled)
+        is Mul if (accumulator.enabled) -> Accumulator(
+            value = accumulator.value + operation.a * operation.b,
+            enabled = accumulator.enabled
+        )
+
         else -> accumulator
     }
 
