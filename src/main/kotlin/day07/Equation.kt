@@ -3,7 +3,7 @@ package day07
 import java.util.*
 
 
-fun Long.concat(other: Long): Long = (this.toString() + other.toString()).toLong()
+fun Long.concat(other: Long) = (this.toString() + other.toString()).toLong()
 
 data class Equation(val testValue: Long, val operators: List<Long>) {
 
@@ -19,12 +19,18 @@ data class Equation(val testValue: Long, val operators: List<Long>) {
             equations
                 .filter { it.isTrue(listOf(Long::plus, Long::times, Long::concat)) }
                 .sumOf(Equation::testValue)
+
+        private fun applyFunction(previous: Long, pair: Pair<Long, (Long, Long) -> Long>): Long {
+            val (next, function) = pair
+            return function(previous, next)
+        }
     }
 
     fun calcSum(addOrMult: Collection<(Long, Long) -> Long>) =
-        operators.drop(1)
+        operators
+            .drop(1)
             .zip(addOrMult)
-            .fold(operators.first()) { acc, pair -> pair.second(acc, pair.first) }
+            .fold(operators.first(), Companion::applyFunction)
 
     fun isTrue(operatorFunctions: List<(Long, Long) -> Long>) =
         operatorFunctions

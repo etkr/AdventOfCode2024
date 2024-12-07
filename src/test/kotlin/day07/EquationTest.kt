@@ -1,6 +1,7 @@
 package day07
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
@@ -40,28 +41,27 @@ class EquationTest {
 
     @Test
     fun `Example 3 is true`() {
-        val equation = Equation(292, listOf(11 ,6 ,16 ,20))
+        val equation = Equation(292, listOf(11, 6, 16, 20))
         assertTrue(equation.isTrue(listOf(Long::plus, Long::times)))
     }
 
     @Test
-    fun `part 2 example 1` (){
-        val equation = Equation(156, listOf(15 , 6))
+    fun `part 2 example 1`() {
+        val equation = Equation(156, listOf(15, 6))
         assertEquals(equation.testValue, equation.calcSum(listOf(Long::concat)))
     }
 
     @Test
-    fun `part 2 example 2` (){
-        val equation = Equation(7290, listOf(6 ,8 ,6 ,15))
-        assertEquals(equation.testValue, equation.calcSum(listOf(Long::times,Long::concat,Long::times)))
+    fun `part 2 example 2`() {
+        val equation = Equation(7290, listOf(6, 8, 6, 15))
+        assertEquals(equation.testValue, equation.calcSum(listOf(Long::times, Long::concat, Long::times)))
     }
 
     @Test
-    fun `part 2 example 3` (){
-        val equation = Equation(192, listOf(17, 8 ,14))
-        assertEquals(equation.testValue, equation.calcSum(listOf(Long::concat,Long::plus)))
+    fun `part 2 example 3`() {
+        val equation = Equation(192, listOf(17, 8, 14))
+        assertEquals(equation.testValue, equation.calcSum(listOf(Long::concat, Long::plus)))
     }
-
 
     @ParameterizedTest(name = "{0} should have a sum of {1}")
     @CsvSource("test.txt,3749", "input.txt,303876485655")
