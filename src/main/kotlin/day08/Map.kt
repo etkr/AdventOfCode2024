@@ -27,15 +27,11 @@ class Map(private val matrix: Array<CharArray>, var recursive: Boolean = false) 
     fun markAntinodesForAntennaPair(pair: Pair<Vector2, Vector2>) {
         val (vectorA, vectorB) = pair
         val difference = vectorA subtract vectorB
-        vectorA.markAntinodeRec(difference, Vector2::add, recursive)
-        vectorB.markAntinodeRec(difference, Vector2::subtract, recursive)
+        vectorA.markAntinodeRec(difference, Vector2::add)
+        vectorB.markAntinodeRec(difference, Vector2::subtract)
     }
 
-    private tailrec fun Vector2.markAntinodeRec(
-        translate: Vector2,
-        func: (Vector2, Vector2) -> Vector2,
-        recursive: Boolean = true
-    ) {
+    private tailrec fun Vector2.markAntinodeRec(translate: Vector2, func: (Vector2, Vector2) -> Vector2) {
         val new = func(this, translate)
         if (new.isOutOfBounds()) return
         this@Map.markAntinode(new)
