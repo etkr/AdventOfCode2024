@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.CsvSource
 
 class EquationTest {
 
-
     @Test
     fun `Example 1 with times is 190`() {
         val equation = Equation(190, listOf(10, 19))

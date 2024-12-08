@@ -2,24 +2,26 @@ package day07
 
 import java.util.*
 
-
 fun Long.concat(other: Long) = (this.toString() + other.toString()).toLong()
 
 data class Equation(val testValue: Long, val operators: List<Long>) {
 
     companion object {
         // Part 1
+        @JvmStatic
         fun sumOfTrueEquations(equations: List<Equation>) =
             equations
                 .filter { it.isTrue(listOf(Long::plus, Long::times)) }
                 .sumOf(Equation::testValue)
 
         // Part 2
+        @JvmStatic
         fun sumOfTrueEquationsWithConcat(equations: List<Equation>) =
             equations
                 .filter { it.isTrue(listOf(Long::plus, Long::times, Long::concat)) }
                 .sumOf(Equation::testValue)
 
+        @JvmStatic
         private fun applyFunction(previous: Long, pair: Pair<Long, (Long, Long) -> Long>): Long {
             val (next, function) = pair
             return function(previous, next)
@@ -43,9 +45,9 @@ data class Equation(val testValue: Long, val operators: List<Long>) {
  * Credits deadshot, 2020
  * https://stackoverflow.com/questions/63433335/java-alternative-of-product-function-of-python-form-itertools
  */
-fun <T> Collection<T>.product(r: Int): List<Collection<T>> {
+fun <T> Collection<T>.product(r: Int): Sequence<Collection<T>> = sequence {
     var result = Collections.nCopies<Collection<T>>(1, emptyList())
-    for (pool in Collections.nCopies(r, LinkedHashSet(this))) {
+    for (pool in Collections.nCopies(r, LinkedHashSet(this@product))) {
         val temp: MutableList<Collection<T>> = ArrayList()
         for (x in result) {
             for (y in pool) {
@@ -56,5 +58,6 @@ fun <T> Collection<T>.product(r: Int): List<Collection<T>> {
         }
         result = temp
     }
-    return result
 }
+
+

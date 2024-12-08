@@ -33,7 +33,6 @@ class ManualTest {
         )
     }
 
-
     @ParameterizedTest
     @MethodSource("updates")
     fun assertOrder(expected: List<Int>, actual: List<Int>) {
