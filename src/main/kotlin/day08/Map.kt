@@ -17,13 +17,14 @@ class Map(private val matrix: Array<CharArray>) {
             .filter { it.value.isNotDot() }
             .groupBy(FrequencyNode::value)
             .values
+            .map { it.map(FrequencyNode::vector) }
 
     fun markAntinodes(recursive: Boolean = false) {
         for (nodes in frequencyIndex()) {
-            for ((a, b) in nodes.combinations()) {
-                val difference = a.vector subtract b.vector
-                markAntinodeRec(a.vector, difference, Vector2::add, recursive)
-                markAntinodeRec(b.vector, difference, Vector2::subtract, recursive)
+            for ((vectorA, vectorB) in nodes.combinations()) {
+                val difference = vectorA subtract vectorB
+                markAntinodeRec(vectorA, difference, Vector2::add, recursive)
+                markAntinodeRec(vectorB, difference, Vector2::subtract, recursive)
             }
         }
     }
