@@ -5,12 +5,12 @@ import Util.combinations
 fun Char.isAntinode() = this == '#'
 fun Char.isNotDot() = this != '.'
 
-class Map(private val matrix: Array<CharArray>) {
+class Map(private val matrix: Array<CharArray>, var recursive: Boolean = false) {
 
     val height = matrix.indices
     val width = matrix[0].indices
 
-    private fun frequencyIndex() =
+    private fun groupByFrequency() =
         matrix
             .mapIndexed { y, chars -> chars.mapIndexed { x, c -> FrequencyNode(c, Vector2(x, y)) } }
             .flatten()
@@ -19,27 +19,28 @@ class Map(private val matrix: Array<CharArray>) {
             .values
             .map { it.map(FrequencyNode::vector) }
 
-    fun markAntinodes(recursive: Boolean = false) {
-        for (nodes in frequencyIndex()) {
-            for ((vectorA, vectorB) in nodes.combinations()) {
-                val difference = vectorA subtract vectorB
-                markAntinodeRec(vectorA, difference, Vector2::add, recursive)
-                markAntinodeRec(vectorB, difference, Vector2::subtract, recursive)
-            }
-        }
+
+    fun markAntinodes() =
+        groupByFrequency()
+            .forEach { it.combinations().forEach(::markAntinodesForAntennaPair) }
+
+    fun markAntinodesForAntennaPair(pair: Pair<Vector2, Vector2>) {
+        val (vectorA, vectorB) = pair
+        val difference = vectorA subtract vectorB
+        vectorA.markAntinodeRec(difference, Vector2::add, recursive)
+        vectorB.markAntinodeRec(difference, Vector2::subtract, recursive)
     }
 
-    private tailrec fun markAntinodeRec(
-        base: Vector2,
+    private tailrec fun Vector2.markAntinodeRec(
         translate: Vector2,
         func: (Vector2, Vector2) -> Vector2,
         recursive: Boolean = true
     ) {
-        val new = func(base, translate)
+        val new = func(this, translate)
         if (new.isOutOfBounds()) return
-        markAntinode(new)
+        this@Map.markAntinode(new)
         if (!recursive) return
-        markAntinodeRec(new, translate, func)
+        new.markAntinodeRec(translate, func)
     }
 
     fun countAntinodes() = matrix.map { it.toList() }.flatten().count(Char::isAntinode)

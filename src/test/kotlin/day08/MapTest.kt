@@ -36,7 +36,8 @@ class MapTest {
     fun `Count part2 antinodes`(file: String, expected: Int) {
         val input = javaClass.getResourceAsStream(file) ?: throw RuntimeException("Path $file not found")
         val map = Parser.parse(input)
-        map.markAntinodes(recursive = true)
+        map.recursive = true
+        map.markAntinodes()
         val result = map.countAntinodesAndAntennas()
         println("------ Map ------")
         println(map)
