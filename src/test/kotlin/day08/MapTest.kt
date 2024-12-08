@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.CsvSource
 
 class MapTest {
 
-
     @Test
     fun parseMap() {
         val input = javaClass.getResourceAsStream("test.txt") ?: throw RuntimeException("Path test.txt not found")
@@ -30,7 +29,6 @@ class MapTest {
         assertEquals(expected, result)
     }
 
-
     @ParameterizedTest(name = "{0} should have a sum of {1}")
     @CsvSource("test.txt,34", "part2-test2.txt,9", "input.txt,955")
     fun `Count part2 antinodes`(file: String, expected: Int) {
@@ -42,7 +40,6 @@ class MapTest {
         println("------ Map ------")
         println(map)
         println("-----------------")
-
         assertEquals(expected, result)
     }
 }
