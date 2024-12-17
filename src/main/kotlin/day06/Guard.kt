@@ -9,7 +9,7 @@ data class Guard(val startingDirection: Direction, val startingNode: MapNode) {
 
     fun notFoundCycles() = !hasCycle
 
-    tailrec fun moveForward() {
+    fun moveForward() {
         currentPosition.visitedDirections.add(currentDirection)
 
         val nextNode = when (currentDirection) {
@@ -20,6 +20,7 @@ data class Guard(val startingDirection: Direction, val startingNode: MapNode) {
         }
 
         if (nextNode == null) {
+            if (hasCycle) return
             exited = true
             return
         }
