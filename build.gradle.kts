@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.0"
+    application
 }
 
 group = "org.example"
@@ -7,6 +8,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass = "day17.MainKt"
 }
 
 dependencies {
@@ -18,7 +23,7 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(23)
     compilerOptions {
         freeCompilerArgs.add("-Xwhen-guards")
     }

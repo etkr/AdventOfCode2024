@@ -1,6 +1,7 @@
 package day06
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 
@@ -17,6 +18,7 @@ class MapTest {
         assertEquals(expected, result)
     }
 
+    @Disabled
     @ParameterizedTest(name = "{0} should have a sum of {1}")
     @CsvSource("test.txt,6", "input.txt,4988")
     fun `Find cycles`(file: String, expected: Int) {

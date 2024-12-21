@@ -5,9 +5,10 @@ class DiskMap(val list: LinkedHashMap<Int, Int>) {
 
     fun replace() {
         while (true)
-            list.rem
+//            list.rem
+        {
+        }
 
     }
 }
 
-}
