@@ -1,26 +1,22 @@
 package day17
 
-import kotlin.jvm.optionals.getOrNull
-import kotlin.math.pow
-import kotlin.streams.asStream
-
 class Computer(
-    private var registerA: ULong,
-    private var registerB: ULong,
-    private var registerC: ULong,
+    private var registerA: Long,
+    private var registerB: Long,
+    private var registerC: Long,
     private val instructions: List<Int>
 ) {
     companion object {
         /**
          * Div function for adv, bdc and cdv
          */
-        private infix fun ULong.div(other: ULong) = this / 2.0.pow(other.toDouble()).toULong()
-
+        private infix fun Long.div(other: Long) = this ushr other.toInt()
+        private fun String.toOctal() = this.split(',').joinToString(separator = "").toLong().toString(8)
 
     }
 
     private var instructionsPointer: Int = 0
-    private val output: MutableList<Int> = mutableListOf()
+    private val output: MutableList<Long> = mutableListOf()
     val program = instructions.joinToString(separator = ",")
 
     /**
@@ -57,12 +53,12 @@ class Computer(
         /**
          * Lazy property to evaluate the operand to its value
          */
-        val literal: ULong
+        val literal: Long
             get() = when (operand) {
-                0 -> 0u
-                1 -> 1u
-                2 -> 2u
-                3 -> 3u
+                0 -> 0
+                1 -> 1
+                2 -> 2
+                3 -> 3
                 4 -> registerA
                 5 -> registerB
                 6 -> registerC
@@ -86,14 +82,14 @@ class Computer(
 
     private inner class BST(operand: Int) : OperationBase(operand) {
         override fun exec() {
-            registerB = literal % 8uL
+            registerB = literal % 8
             instructionsPointer++
         }
     }
 
     private inner class JNZ(operand: Int) : OperationBase(operand) {
         override fun exec() {
-            if (registerA == 0uL) {
+            if (registerA == 0L) {
                 instructionsPointer++
                 return
             }
@@ -110,7 +106,7 @@ class Computer(
 
     private inner class OUT(operand: Int) : OperationBase(operand) {
         override fun exec() {
-            output.add((literal % 8u).toInt())
+            output.add(literal % 8)
             instructionsPointer++
         }
     }
@@ -136,22 +132,22 @@ class Computer(
         return output.joinToString(separator = ",")
     }
 
-    fun whereOutputMatchesProgram(i: ULong): Boolean {
-        if (i % 10000000uL == 0uL) {
-            println("progress: ${i.toDouble() * 100 / ULong.MAX_VALUE.toDouble()}%")
-        }
-        val computer = Computer(registerA = i, registerB = 0uL, registerC = 0uL, instructions)
+    fun whereOutputMatchesProgram(input: Long): Boolean {
+        val computer = Computer(registerA = input, registerB = 0, registerC = 0, instructions)
         val result = computer.executeProgram()
+        println("---------------")
+        println("register A: ${input.toString(8)}")
+        println("result:     ${result.toOctal()}")
+        println("program:    ${program.toOctal()}")
+        println("---------------")
         return result == program
     }
 
+    val powerOf2 = sequence<Long> {
+        yield("1044461427675377".toLong(8))
+
+    }
+
     fun findOutputOfSelf() =
-        (UInt.MAX_VALUE.toULong()..ULong.MAX_VALUE)
-            .asSequence()
-            .asStream()
-            .parallel()
-            .filter(::whereOutputMatchesProgram)
-            .findFirst()
-            .getOrNull()
-            ?: throw RuntimeException("Did not find any matches")
+        powerOf2.find(::whereOutputMatchesProgram) ?: throw RuntimeException("Did not find any matches")
 }

@@ -24,7 +24,7 @@ object ComputerTest {
     @Test
     fun `Part 1 example with register A = 117440 is 0,3,5,4,3,0`() {
         val program = listOf(0, 3, 5, 4, 3, 0)
-        val computer = Computer(117440u, 0u, 0u, program)
+        val computer = Computer(117440, 0, 0, program)
         val result = computer.executeProgram()
         val expected = program.joinToString(",")
         assertEquals(expected, result)
@@ -35,7 +35,7 @@ object ComputerTest {
         val input = javaClass.getResourceAsStream("test2.txt") ?: throw RuntimeException("Resource not found")
         val computer = Parser.parse(input)
         val result = computer.findOutputOfSelf()
-        assertEquals(117440u, result)
+        assertEquals(117440, result)
     }
 
     @Test
@@ -43,11 +43,7 @@ object ComputerTest {
         val input = javaClass.getResourceAsStream("input.txt") ?: throw RuntimeException("Resource not found")
         val computer = Parser.parse(input)
         val result = computer.findOutputOfSelf()
-        assertEquals(117440u, result)
+        assertEquals(117440, result)
     }
 
-    @Test
-    fun `asd`() {
-        assertEquals(UInt.MAX_VALUE.toDouble(), (ULong.MAX_VALUE.toDouble() / 2) * 100 / ULong.MAX_VALUE.toDouble())
-    }
 }
