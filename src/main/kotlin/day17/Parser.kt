@@ -9,16 +9,13 @@ object Parser {
         var registerA = 0L
         var registerB = 0L
         var registerC = 0L
-        var program = emptyList<Int>()
+        var program = emptyList<Long>()
         for (line in lines) {
-            if (line.startsWith("Register A: ")) {
-                registerA = line.removePrefix("Register A: ").toLong()
-            } else if (line.startsWith("Register B: ")) {
-                registerB = line.removePrefix("Register B: ").toLong()
-            } else if (line.startsWith("Register C: ")) {
-                registerC = line.removePrefix("Register C: ").toLong()
-            } else if (line.startsWith("Program: ")) {
-                program = line.removePrefix("Program: ").split(',').map(String::toInt)
+            when {
+                line.startsWith("Register A: ") -> registerA = line.removePrefix("Register A: ").toLong()
+                line.startsWith("Register B: ") -> registerB = line.removePrefix("Register B: ").toLong()
+                line.startsWith("Register C: ") -> registerC = line.removePrefix("Register C: ").toLong()
+                line.startsWith("Program: ") -> program = line.removePrefix("Program: ").split(',').map(String::toLong)
             }
         }
         return Computer(registerA, registerB, registerC, program)

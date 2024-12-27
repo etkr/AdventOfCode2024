@@ -2,9 +2,9 @@ package day17
 
 class Computer(
     private var registerA: Long,
-    private var registerB: Long,
-    private var registerC: Long,
-    private val instructions: List<Int>
+    private var registerB: Long = 0,
+    private var registerC: Long = 0,
+    val instructions: List<Long>
 ) {
     companion object {
         /**
@@ -12,6 +12,7 @@ class Computer(
          */
         private infix fun Long.div(other: Long) = this ushr other.toInt()
         private fun String.toOctal() = this.split(',').joinToString(separator = "").toLong().toString(8)
+        private fun List<Long>.toOctal() = this.joinToString(separator = "").toLong().toString(8)
 
     }
 
@@ -29,7 +30,7 @@ class Computer(
      * Intermediary class for parsing instructions
      */
     private inner class InstructionSet(private val opcode: Int, private val operand: Int) {
-        constructor(list: List<Int>) : this(list[0].toInt(), list[1])
+        constructor(list: List<Long>) : this(list[0].toInt(), list[1].toInt())
 
         fun createOperation(): Operation = when (opcode) {
             0 -> ADV(operand)
@@ -125,11 +126,11 @@ class Computer(
         }
     }
 
-    fun executeProgram(): String {
+    fun executeProgram(): List<Long> {
         while (instructionsPointer < operations.size) {
             operations[instructionsPointer].exec()
         }
-        return output.joinToString(separator = ",")
+        return output
     }
 
     fun whereOutputMatchesProgram(input: Long): Boolean {
@@ -140,14 +141,43 @@ class Computer(
         println("result:     ${result.toOctal()}")
         println("program:    ${program.toOctal()}")
         println("---------------")
-        return result == program
+        return result == instructions
     }
 
-    val powerOf2 = sequence<Long> {
-        yield("1044461427675377".toLong(8))
-
+    private fun findBits(a: Long, output: Long): List<Long> {
+        val variants = mutableListOf<Long>()
+        for (bits in 0b000..0b111) {
+            val answ = (a shl 3) + bits
+            val computer = Computer(registerA = registerA, instructions = instructions)
+            val result = computer.executeProgram()
+            if (result.size == 1 && result.first() == output) {
+                variants += answ
+            }
+        }
+        return variants
     }
 
-    fun findOutputOfSelf() =
-        powerOf2.find(::whereOutputMatchesProgram) ?: throw RuntimeException("Did not find any matches")
+    fun findBit(input: Long): Long {
+        for (i in 0L until 8L) {
+            val registerA = (input shl 3) + i
+            val computer = Computer(registerA = registerA, instructions = instructions)
+            val result = computer.executeProgram()
+            val first = result.first()
+            if (first == input) {
+                return first
+            }
+        }
+        throw RuntimeException("Found None")
+    }
+
+    fun findSolution(): Long {
+        var candidates = listOf(0L)
+        instructions.reversed().forEach { insn ->
+            candidates = candidates.flatMap { a ->
+                findBits(a, insn)
+            }
+        }
+        return candidates.min()
+    }
+
 }

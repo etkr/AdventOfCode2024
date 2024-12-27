@@ -9,4 +9,12 @@ object Util {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    fun <T> Array<T>.copyAppend(item: T): Array<T> {
+        val new = this.copyOf(size + 1)
+        new[size] = item
+        return new as? Array<T> ?: throw RuntimeException()
+    }
+
+
 }

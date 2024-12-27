@@ -24,13 +24,12 @@ class Map(val mapNodes: List<MapNode>, private val guard: Guard) {
         }
 
         fun findCyclePosition(map: Map): Int {
-            return generateMaps(map).toList().filter { newMap ->
+            return generateMaps(map).toList().count { newMap ->
                 newMap.walk()
                 println(newMap)
                 println()
-                val sfsdfsd = newMap.guard.hasCycle
-                return@filter sfsdfsd
-            }.count()
+                newMap.guard.hasCycle
+            }
         }
     }
 
