@@ -10,9 +10,7 @@ class Parser(stream: InputStream) {
         .flatMapIndexed(::processLine)
         .associateBy(Node::coordinates)
 
-    private fun processLine(y: Int, line: String) = line
-
-        .mapIndexed { x, plantId -> Node(plantId = plantId, x = x, y = y) }
+    private fun processLine(y: Int, line: String) = line.mapIndexed { x, plantId -> Node(plantId, x, y) }
 
     private fun link(node: Node) {
         node.up = map[node.coordinates.up]
