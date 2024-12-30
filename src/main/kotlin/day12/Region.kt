@@ -1,23 +1,27 @@
 package day12
 
-data class Region(val plantId: Char, val nodes: MutableSet<Node> = mutableSetOf<Node>()) {
+data class Region(val plantId: Char, val nodes: Set<Node>) {
+    companion object {
+        private fun findRegion(node: Node): Set<Node> {
+            val visited = mutableSetOf<Node>()
+            node.findRegionRec(visited)
+            return visited
+        }
 
-    constructor(node: Node) : this(node.plantId) {
-        findRegion(node)
+        private fun Node.findRegionRec(visited: MutableSet<Node>) {
+            visited.add(this)
+            directions
+                .filter { !visited.contains(it) }
+                .filter { plantId == it.plantId }
+                .forEach { it.findRegionRec(visited) }
+        }
     }
 
-    private fun findRegion(node: Node) {
-        nodes.add(node)
-        node.directions
-            .filter(::notVisited)
-            .filter(::plantIdEquals)
-            .forEach(::findRegion)
-    }
+    constructor(node: Node) : this(node.plantId, findRegion(node))
 
-    private fun notVisited(node: Node) = !nodes.contains(node)
-    private fun plantIdEquals(node: Node) = plantId == node.plantId
-
+    val corners get() = nodes.sumOf(Node::numberOfCorners)
     val perimeter get() = nodes.sumOf(Node::edgeCount)
     val area get() = nodes.size
     val fencePrice get() = perimeter * area
+    val sidesFencePrice get() = corners * area
 }
